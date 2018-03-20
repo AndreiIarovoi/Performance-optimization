@@ -1,0 +1,12 @@
+Size,Class
+NA,Unknown
+20 to 99 employees,Small
+"10,000 or more employees",Big
+10 to 19 employees,Small
+Fewer than 10 employees,Small
+"5,000 to 9,999 employees",Big
+100 to 499 employees,Medium
+"1,000 to 4,999 employees",Medium
+500 to 999 employees,Medium
+I don't know,Unknown
+I prefer not to answer,Unknown

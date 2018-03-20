@@ -1,0 +1,57 @@
+<div>
+    <div class="row">
+        <button type="button" class="btn btn-primary" (click)="getRespondents()">Refresh</button>
+        <chart  [chartData]="respondentsChartData"></chart>
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Professional</th>
+                    <th>Country</th>
+                    <th>Gender</th>
+                    <th>Developer Type</th>
+                    <th>Experience Level</th>
+                    <th>Version Control</th>
+                    <th>Language</th>
+                    <th>Work Start</th>
+                    <th>Company Size</th>
+                    <th>Career Satisfaction</th>
+                    <th>Job Satisfaction</th>
+                </tr>
+                <tr>
+                    <th></th>
+                    <th><input class="col-xs-12" type="text" [(ngModel)]="filter.professional" /></th>
+                    <th><input class="col-xs-12" type="text" [(ngModel)]="filter.country" /></th>
+                    <th><input class="col-xs-12" type="text" [(ngModel)]="filter.gender" /></th>
+                    <th><input class="col-xs-12" type="text" [(ngModel)]="filter.developerType" /></th>
+                    <th><input class="col-xs-12" type="text" [(ngModel)]="filter.experienceLevel" /></th>
+                    <th><input class="col-xs-12" type="text" [(ngModel)]="filter.versionControl" /></th>
+                    <th><input class="col-xs-12" type="text" [(ngModel)]="filter.language" /></th>
+                    <th></th>
+                    <th><input class="col-xs-12" type="text" [(ngModel)]="filter.companySize" /></th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let respondent of respondents | paginate: { itemsPerPage: pageSize, currentPage: pageNumber }">
+                    <td>{{respondent.id}}</td>
+                    <td>{{respondent.professional}}</td>
+                    <td>{{respondent.country}}</td>
+                    <td>{{respondent.gender}}</td>
+                    <td>{{respondent.developerType}}</td>
+                    <td>{{respondent.experienceLevel}}</td>
+                    <td>{{respondent.versionControl}}</td>
+                    <td>{{respondent.language}}</td>
+                    <td>{{respondent.workStart}}</td>
+                    <td>{{respondent.companySize}}</td>
+                    <td>{{respondent.careerSatisfaction}}</td>
+                    <td>{{respondent.jobSatisfaction}}</td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="text-right">
+            <pagination-controls (pageChange)="pageNumber = $event"></pagination-controls>
+        </div>
+    </div>
+</div>
