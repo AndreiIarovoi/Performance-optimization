@@ -11,6 +11,7 @@ namespace StackOverflowSurvey.Service
     public class RespondentsValidator : IRespondentsValidator
     {
         private readonly ICountryRepository countryRepository;
+        private IList<Country> countries;
 
         public RespondentsValidator(ICountryRepository countryRepository)
         {
@@ -19,6 +20,8 @@ namespace StackOverflowSurvey.Service
 
         public IEnumerable<string> Validate(IEnumerable<Respondent> respondents)
         {
+            this.countries = countryRepository.GetAll().ToList();
+
             foreach (Respondent respondent in respondents)
             {
                 yield return ValidateRespondent(respondent);
@@ -29,12 +32,14 @@ namespace StackOverflowSurvey.Service
         {
             string errors = String.Empty;
 
+
+
             if (String.IsNullOrEmpty(respondent.RespondentName))
             {
                 errors += "Respondent must have RespondentName" + ";";
             }
 
-            if (countryRepository.GetAll().ToList().All(c => c.Name != respondent.Country))
+            if (countries.All(c => c.Name != respondent.Country))
             {
                 errors += $"Unknown Country for respondent: {respondent.RespondentName}";
             }

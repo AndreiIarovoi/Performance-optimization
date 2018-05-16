@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Data.Entity;
-
+using System.Linq;
 using StackOverflowSurvey.Domain.Entities;
 
 namespace StackOverflowSurvey.Domain.Repositories
@@ -16,9 +16,9 @@ namespace StackOverflowSurvey.Domain.Repositories
 
         protected SurveyContext Context { get; set; }
 
-        public IEnumerable<TEntity> GetAll()
+        public IQueryable<TEntity> GetAll()
         {
-            return Entities;
+            return Entities.AsNoTracking();
         }
     }
 }
