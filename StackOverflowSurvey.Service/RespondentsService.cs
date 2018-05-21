@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-
 using StackOverflowSurvey.Domain.Dto;
+using StackOverflowSurvey.Domain.Entities;
 using StackOverflowSurvey.Domain.Repositories;
 using StackOverflowSurvey.Service.Dto;
 using StackOverflowSurvey.Service.Extensibility;
 using StackOverflowSurvey.Service.SurveyImport;
-
 using Respondent = StackOverflowSurvey.Service.Dto.Respondent;
 using RespondentEntity = StackOverflowSurvey.Domain.Entities.Respondent;
 
@@ -21,22 +19,25 @@ namespace StackOverflowSurvey.Service
 
         private readonly IRespondentsValidator respondentValidator;
 
-        private readonly Func<ICompanySizeCache> companySizeCacheFactory;
+        private readonly ICompanySizeRepository companySizeRepository;
 
         private readonly IExperienceLevelRepository experienceLevelRepository;
+
+        private IList<CompanySize> companySizes;
+        private IList<ExperienceLevel> experienceLevel;
 
         public RespondentsService(
             IRespondentsReader respondentsReader,
             IRespondentRepository respondentRepository,
             IRespondentsValidator respondentValidator,
-            Func<ICompanySizeCache> companySizeCacheFactory,
+            ICompanySizeRepository companySizeRepository,
             IExperienceLevelRepository experienceLevelRepository)
         {
             this.respondentsReader = respondentsReader;
             this.respondentRepository = respondentRepository;
             this.respondentValidator = respondentValidator;
-            this.companySizeCacheFactory = companySizeCacheFactory;
             this.experienceLevelRepository = experienceLevelRepository;
+            this.companySizeRepository = companySizeRepository;
         }
 
         public IEnumerable<RespondentsCreationResult> CreateRespondents(IEnumerable<PostedFile> postedFiles)
@@ -52,9 +53,13 @@ namespace StackOverflowSurvey.Service
 
         public IEnumerable<Respondent> GetRespondents(RespondentsFilter filter)
         {
-            return respondentRepository.GetFiltered(CreateRespondentsQuery(filter)).ToList().Select(MapRespondent).Where(
-                r => (string.IsNullOrEmpty(filter.ExperienceLevel) || r.ExperienceLevel.Contains(filter.ExperienceLevel))
-                && (string.IsNullOrEmpty(filter.CompanySize) || r.CompanySize.Contains(filter.CompanySize)));
+
+            this.GetCompanySizeCache();
+            this.GetExperienceLevel();
+
+            return respondentRepository.GetFiltered(CreateRespondentsQuery(filter)).Select(this.MapRespondent)
+                .Where(r => (string.IsNullOrEmpty(filter.ExperienceLevel) || r.ExperienceLevel.Contains(filter.ExperienceLevel))
+                        && (string.IsNullOrEmpty(filter.CompanySize) || r.CompanySize.Contains(filter.CompanySize))).AsEnumerable();
         }
 
         private RespondentsQuery CreateRespondentsQuery(RespondentsFilter filter)
@@ -70,24 +75,36 @@ namespace StackOverflowSurvey.Service
             };
         }
 
-        private Respondent MapRespondent(RespondentEntity respondent)
+        private Respondent MapRespondent(RespondentInfo respondent)
         {
             Respondent newRespondent = new Respondent
-                                 {
-                                     Id = respondent.RespondentName,
-                                     Country = respondent.Country,
-                                     DeveloperType = respondent.EmploymentInfo.DeveloperType,
-                                     Gender = respondent.Gender,
-                                     Professional = respondent.Professional,
-                                     CompanySize = companySizeCacheFactory().GetCompanyClass(respondent.EmploymentInfo.CompanySize),
-                                     Language = respondent.HaveWorkedAndWantInfo.HaveWorkedLanguage,
-                                     VersionControl = respondent.TechnicalDetailsInfo.VersionControl,
-                                     WorkStart = respondent.Job.WorkStart,
-                                     ExperienceLevel = experienceLevelRepository.GetAll().FirstOrDefault(e => e.YearsProgram == respondent.EmploymentInfo.YearsProgram)?.Level,
-                                     CareerSatisfaction = respondent.EmploymentInfo.CareerSatisfaction,
-                                     JobSatisfaction = respondent.EmploymentInfo.JobSatisfaction
-                                 };
+            {
+                    Id = respondent.Id,
+                    Country = respondent.Country,
+                    DeveloperType = respondent.DeveloperType,
+                    Gender = respondent.Gender,
+                    Professional = respondent.Professional,
+                    CompanySize = this.companySizes.FirstOrDefault(size => size.Size == respondent.CompanySize)?.Class,
+                    Language = respondent.Language,
+                    VersionControl = respondent.VersionControl,
+                    WorkStart = respondent.WorkStart,
+                    ExperienceLevel = this.experienceLevel.FirstOrDefault(level => level.YearsProgram == respondent.ExperienceLevel)?.Level,
+                    CareerSatisfaction = respondent.CareerSatisfaction,
+                    JobSatisfaction = respondent.JobSatisfaction
+                };
+
             return newRespondent;
+        }
+
+
+        private void GetCompanySizeCache()
+        {
+            this.companySizes = this.companySizes ?? (this.companySizes = this.companySizeRepository.GetAll().ToList());
+        }
+
+        private void GetExperienceLevel()
+        {
+            this.experienceLevel = this.experienceLevel ?? (this.experienceLevel = this.experienceLevelRepository.GetAll().ToList());
         }
     }
 }

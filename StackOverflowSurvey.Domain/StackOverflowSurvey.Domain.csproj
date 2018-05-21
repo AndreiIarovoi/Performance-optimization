@@ -53,6 +53,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Dto\RespondentInfo.cs" />
     <Compile Include="Dto\RespondentsQuery.cs" />
     <Compile Include="Entities\CompanySize.cs" />
     <Compile Include="Entities\Country.cs" />
