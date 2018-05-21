@@ -53,6 +53,8 @@
     <Compile Include="Extensibility\ICompanySizeCache.cs" />
     <Compile Include="Extensibility\IRespondentsService.cs" />
     <Compile Include="Extensibility\IRespondentsValidator.cs" />
+    <Compile Include="Extensibility\IExperienceLevelCache.cs" />
+    <Compile Include="ExperienceLevelCache.cs" />
     <Compile Include="RespondentsCreationResult.cs" />
     <Compile Include="RespondentsLoader.cs" />
     <Compile Include="RespondentsValidator.cs" />

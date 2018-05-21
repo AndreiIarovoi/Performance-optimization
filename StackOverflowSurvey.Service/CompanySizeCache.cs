@@ -9,28 +9,18 @@ namespace StackOverflowSurvey.Service
 {
     internal class CompanySizeCache : ICompanySizeCache
     {
-        private static List<CompanySize> companySizesCache = new List<CompanySize>();
+        private static IList<CompanySize> companySizesCache;
         private readonly ICompanySizeRepository companySizeRepository;
-        private bool isInitialized = false;
 
         public CompanySizeCache(ICompanySizeRepository companySizeRepository)
         {
             this.companySizeRepository = companySizeRepository;
+            companySizesCache = this.companySizeRepository.GetAll().ToList();
         }
 
-        public string GetCompanyClass(string size)
+        public string GetCompanySizesCache(string size)
         {
-            EnsureCompanySizesLoaded();
             return companySizesCache.FirstOrDefault(companySize => companySize.Size == size)?.Class;
-        }
-
-        private void EnsureCompanySizesLoaded()
-        {
-            if (!isInitialized)
-            {
-                companySizesCache.AddRange(companySizeRepository.GetAll());
-                isInitialized = true;
-            }
         }
     }
 }

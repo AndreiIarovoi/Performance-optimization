@@ -13,6 +13,7 @@ namespace StackOverflowSurvey.Service
             Bind<IRespondentsService>().To<RespondentsService>();
             Bind<IRespondentsValidator>().To<RespondentsValidator>();
             Bind<ICompanySizeCache>().To<CompanySizeCache>();
+            Bind<IExperienceLevelCache>().To<ExperienceLevelCache>();
         }
     }
 }
