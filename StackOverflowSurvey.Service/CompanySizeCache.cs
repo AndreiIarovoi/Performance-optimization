@@ -9,7 +9,7 @@ namespace StackOverflowSurvey.Service
 {
     internal class CompanySizeCache : ICompanySizeCache
     {
-        private static IList<CompanySize> companySizesCache;
+        private IList<CompanySize> companySizesCache;
         private readonly ICompanySizeRepository companySizeRepository;
 
         public CompanySizeCache(ICompanySizeRepository companySizeRepository)

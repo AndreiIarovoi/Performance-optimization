@@ -8,7 +8,7 @@ namespace StackOverflowSurvey.Service
 {
     class ExperienceLevelCache : IExperienceLevelCache
     {
-        private static IList<ExperienceLevel> experienceLevelCache;
+        private IList<ExperienceLevel> experienceLevelCache;
         private readonly IExperienceLevelRepository experienceLevelRepository;
 
         public ExperienceLevelCache(IExperienceLevelRepository experienceLevelRepository)
