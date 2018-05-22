@@ -8,18 +8,26 @@ namespace StackOverflowSurvey.Service
 {
     class ExperienceLevelCache : IExperienceLevelCache
     {
-        private IList<ExperienceLevel> experienceLevelCache;
+        private static IList<ExperienceLevel> experienceLevelCache;
         private readonly IExperienceLevelRepository experienceLevelRepository;
 
         public ExperienceLevelCache(IExperienceLevelRepository experienceLevelRepository)
         {
             this.experienceLevelRepository = experienceLevelRepository;
-            experienceLevelCache = this.experienceLevelRepository.GetAll().ToList();
+            GetExperienceLevelCache();
         }
 
         public string GetExperienceLevelCache(string level)
         {
             return experienceLevelCache.FirstOrDefault(experienceLevel => experienceLevel.YearsProgram == level)?.Level;
+        }
+
+        private void GetExperienceLevelCache()
+        {
+            if (experienceLevelCache == null || !experienceLevelCache.Any())
+            {
+                experienceLevelCache = this.experienceLevelRepository.GetAll().ToList();
+            }
         }
     }
 }
