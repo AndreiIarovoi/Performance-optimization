@@ -75,7 +75,7 @@ namespace StackOverflowSurvey.Domain.Repositories
 
         private void Save<T>(string tableName, IEnumerable<T> list, string primaryKey)
         {
-            using (SqlBulkCopy sbc = new SqlBulkCopy(context.Database.Connection.ConnectionString/*, SqlBulkCopyOptions.UseInternalTransaction*/))
+            using (SqlBulkCopy sbc = new SqlBulkCopy(context.Database.Connection.ConnectionString))
             {
                 DataTable dataTable = this.GetDataTable(list);
 
