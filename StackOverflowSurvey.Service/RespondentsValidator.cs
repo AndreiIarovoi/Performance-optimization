@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
 using StackOverflowSurvey.Domain.Entities;
 using StackOverflowSurvey.Domain.Repositories;
 using StackOverflowSurvey.Service.Extensibility;
@@ -17,12 +16,11 @@ namespace StackOverflowSurvey.Service
         public RespondentsValidator(ICountryRepository countryRepository)
         {
             this.countryRepository = countryRepository;
+            this.countries = this.GetCountries();
         }
 
         public IEnumerable<string> Validate(IEnumerable<Respondent> respondents)
         {
-            this.countries = countryRepository.GetAll().ToList();
-
             foreach (Respondent respondent in respondents)
             {
                 yield return ValidateRespondent(respondent);
@@ -40,12 +38,22 @@ namespace StackOverflowSurvey.Service
                 errors += "Respondent must have RespondentName" + ";";
             }
 
-            if (countries.All(c => c.Name != respondent.Country))
+            if (this.countries.All(c => c.Name != respondent.Country))
             {
                 errors += $"Unknown Country for respondent: {respondent.RespondentName}";
             }
 
             return errors;
+        }
+
+        private IList<Country> GetCountries()
+        {
+            if (this.countries == null || this.countries.Count == 0)
+            {
+                this.countries = this.countryRepository.GetAll().ToList();
+            }
+
+            return this.countries;
         }
     }
 }
