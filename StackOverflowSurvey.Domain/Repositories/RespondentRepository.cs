@@ -91,7 +91,7 @@ namespace StackOverflowSurvey.Domain.Repositories
 
             if (tableName != "Respondents" && !string.IsNullOrEmpty(primaryKey))
             {
-                string script = @";WITH Res AS (SELECT Id, ROW_NUMBER() OVER (ORDER BY (SELECT 1)) AS rn FROM [dbo].[Respondents]), Tbl AS (SELECT Id AS Id, ROW_NUMBER() OVER (ORDER BY (SELECT 1)) AS rn FROM [dbo].{0}) UPDATE r SET r.{1} = Tbl.Id FROM [dbo].[Respondents] r INNER JOIN Res ON r.Id = Res.Id INNER JOIN Tbl ON Res.rn = Tbl.rn WHERE r.{2} IS NULL;";
+                string script = @";WITH Res AS (SELECT Id, ROW_NUMBER() OVER (ORDER BY Id) AS rn FROM [dbo].[Respondents]), Tbl AS (SELECT Id AS Id, ROW_NUMBER() OVER (ORDER BY Id) AS rn FROM [dbo].{0}) UPDATE r SET r.{1} = Tbl.Id FROM [dbo].[Respondents] r INNER JOIN Res ON r.Id = Res.Id INNER JOIN Tbl ON Res.rn = Tbl.rn WHERE r.{2} IS NULL;";
 
                 context.Database.ExecuteSqlCommand(string.Format(script, tableName, primaryKey, primaryKey));
             }
