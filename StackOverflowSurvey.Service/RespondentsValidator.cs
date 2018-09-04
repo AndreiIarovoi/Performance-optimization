@@ -31,8 +31,6 @@ namespace StackOverflowSurvey.Service
         {
             string errors = String.Empty;
 
-
-
             if (String.IsNullOrEmpty(respondent.RespondentName))
             {
                 errors += "Respondent must have RespondentName" + ";";
