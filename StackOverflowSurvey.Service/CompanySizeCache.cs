@@ -15,7 +15,7 @@ namespace StackOverflowSurvey.Service
         public CompanySizeCache(ICompanySizeRepository companySizeRepository)
         {
             this.companySizeRepository = companySizeRepository;
-            GetCompanySizeCache();
+            SetCompanySizeCache();
         }
 
         public string GetCompanySizesCache(string size)
@@ -23,7 +23,7 @@ namespace StackOverflowSurvey.Service
             return companySizesCache.FirstOrDefault(companySize => companySize.Size == size)?.Class;
         }
 
-        public void GetCompanySizeCache()
+        private void SetCompanySizeCache()
         {
             if (companySizesCache == null || !companySizesCache.Any())
             {
