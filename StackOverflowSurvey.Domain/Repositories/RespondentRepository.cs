@@ -49,13 +49,39 @@ namespace StackOverflowSurvey.Domain.Repositories
 
         public IQueryable<RespondentInfo> GetFiltered(RespondentsQuery query)
         {
-            return GetAllRespondentInfo().Where(r => 
-                (string.IsNullOrEmpty(query.Professional) || r.Professional.Contains(query.Professional)) &&
-                (string.IsNullOrEmpty(query.Country) || r.Country.Contains(query.Country)) &&
-                (string.IsNullOrEmpty(query.DeveloperType) || r.DeveloperType.Contains(query.DeveloperType)) &&
-                (string.IsNullOrEmpty(query.Language) || r.Language.Contains(query.Language)) &&
-                (string.IsNullOrEmpty(query.VersionControl) || r.VersionControl.Contains(query.VersionControl)) &&
-                (string.IsNullOrEmpty(query.Gender) || r.Gender.Contains(query.Gender)));
+            IQueryable<RespondentInfo> respondents = GetAllRespondentInfo();
+
+            if (!string.IsNullOrEmpty(query.Professional))
+            {
+                respondents = respondents.Where(r => r.Professional.Contains(query.Professional));
+            }
+
+            if (!string.IsNullOrEmpty(query.Country))
+            {
+                respondents = respondents.Where(r => r.Country.Contains(query.Country));
+            }
+
+            if (!string.IsNullOrEmpty(query.DeveloperType))
+            {
+                respondents = respondents.Where(r => r.DeveloperType.Contains(query.DeveloperType));
+            }
+
+            if (!string.IsNullOrEmpty(query.Language))
+            {
+                respondents = respondents.Where(r => r.Language.Contains(query.Language));
+            }
+
+            if (!string.IsNullOrEmpty(query.VersionControl))
+            {
+                respondents = respondents.Where(r => r.VersionControl.Contains(query.VersionControl));
+            }
+
+            if (!string.IsNullOrEmpty(query.Gender))
+            {
+                respondents = respondents.Where(r => r.Gender.Contains(query.Gender));
+            }
+
+            return respondents;
         }
 
         public void AddRange(IEnumerable<Respondent> respondents)
