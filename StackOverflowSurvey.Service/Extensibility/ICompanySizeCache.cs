@@ -2,6 +2,6 @@
 {
     public interface ICompanySizeCache
     {
-        string GetCompanySizesCache(string size);
+        string GetCompanyClass(string size);
     }
 }

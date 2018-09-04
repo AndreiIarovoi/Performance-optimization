@@ -17,9 +17,9 @@ namespace StackOverflowSurvey.Service
             this.SetExperienceLevelCache();
         }
 
-        public string GetExperienceLevelCache(string level)
+        public string GetExperienceLevel(string yearsProgram)
         {
-            return experienceLevelCache.FirstOrDefault(experienceLevel => experienceLevel.YearsProgram == level)?.Level;
+            return experienceLevelCache.FirstOrDefault(experienceLevel => experienceLevel.YearsProgram == yearsProgram)?.Level;
         }
 
         private void SetExperienceLevelCache()

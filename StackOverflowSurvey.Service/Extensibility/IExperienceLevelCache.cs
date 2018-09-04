@@ -3,6 +3,6 @@ namespace StackOverflowSurvey.Service.Extensibility
 {
     public interface IExperienceLevelCache
     {
-        string GetExperienceLevelCache(string size);
+        string GetExperienceLevel(string size);
     }
 }

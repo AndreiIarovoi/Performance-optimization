@@ -18,7 +18,7 @@ namespace StackOverflowSurvey.Service
             SetCompanySizeCache();
         }
 
-        public string GetCompanySizesCache(string size)
+        public string GetCompanyClass(string size)
         {
             return companySizesCache.FirstOrDefault(companySize => companySize.Size == size)?.Class;
         }
