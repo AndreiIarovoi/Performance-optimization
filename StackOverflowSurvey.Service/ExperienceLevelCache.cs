@@ -14,7 +14,7 @@ namespace StackOverflowSurvey.Service
         public ExperienceLevelCache(IExperienceLevelRepository experienceLevelRepository)
         {
             this.experienceLevelRepository = experienceLevelRepository;
-            GetExperienceLevelCache();
+            this.SetExperienceLevelCache();
         }
 
         public string GetExperienceLevelCache(string level)
@@ -22,7 +22,7 @@ namespace StackOverflowSurvey.Service
             return experienceLevelCache.FirstOrDefault(experienceLevel => experienceLevel.YearsProgram == level)?.Level;
         }
 
-        private void GetExperienceLevelCache()
+        private void SetExperienceLevelCache()
         {
             if (experienceLevelCache == null || !experienceLevelCache.Any())
             {
