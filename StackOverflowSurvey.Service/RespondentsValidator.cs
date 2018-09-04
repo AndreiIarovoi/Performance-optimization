@@ -4,7 +4,6 @@ using System.Linq;
 using StackOverflowSurvey.Domain.Entities;
 using StackOverflowSurvey.Domain.Repositories;
 using StackOverflowSurvey.Service.Extensibility;
-using Respondent = StackOverflowSurvey.Domain.Entities.Respondent;
 
 namespace StackOverflowSurvey.Service
 {
