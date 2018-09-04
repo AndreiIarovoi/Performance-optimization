@@ -46,7 +46,7 @@ namespace StackOverflowSurvey.Service
 
         private IList<Country> GetCountries()
         {
-            if (this.countries == null || this.countries.Count == 0)
+            if (this.countries == null || !this.countries.Any())
             {
                 this.countries = this.countryRepository.GetAll().ToList();
             }
