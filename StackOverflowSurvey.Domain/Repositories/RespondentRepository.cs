@@ -12,6 +12,8 @@ namespace StackOverflowSurvey.Domain.Repositories
 {
     public class RespondentRepository : IRespondentRepository
     {
+        private const string Respondents = "Respondents";
+
         private readonly SurveyContext context;
 
         public RespondentRepository(SurveyContext context)
@@ -89,7 +91,7 @@ namespace StackOverflowSurvey.Domain.Repositories
                 sbc.WriteToServer(dataTable);
             }
 
-            if (tableName != "Respondents" && !string.IsNullOrEmpty(primaryKey))
+            if (tableName != Respondents && !string.IsNullOrEmpty(primaryKey))
             {
                 string script = @";WITH Res AS (SELECT Id, ROW_NUMBER() OVER (ORDER BY Id) AS rn FROM [dbo].[Respondents]), Tbl AS (SELECT Id AS Id, ROW_NUMBER() OVER (ORDER BY Id) AS rn FROM [dbo].{0}) UPDATE r SET r.{1} = Tbl.Id FROM [dbo].[Respondents] r INNER JOIN Res ON r.Id = Res.Id INNER JOIN Tbl ON Res.rn = Tbl.rn WHERE r.{2} IS NULL;";
 
