@@ -33,7 +33,7 @@ namespace StackOverflowSurvey.Service
 
             if (String.IsNullOrEmpty(respondent.RespondentName))
             {
-                errors += "Respondent must have RespondentName" + ";";
+                errors += "Respondent must have RespondentName;";
             }
 
             if (this.countries.All(c => c.Name != respondent.Country))
